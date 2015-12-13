@@ -62,7 +62,7 @@ public class MainActivityFragment extends Fragment {
             });
         }
 
-        /* set listener for op's */
+        /* set listener for ops */
         for (int i = 0; i < OP_COUNT; i++) {
             final int key = i;
             btn_calc_op[i] = (Button) frag_view.findViewById(btn_calc_op_i[i]);
