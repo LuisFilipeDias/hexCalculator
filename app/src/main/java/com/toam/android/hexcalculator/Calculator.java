@@ -1,7 +1,5 @@
 package com.toam.android.hexcalculator;
 
-import android.util.Log;
-
 /**
  * Created by luisfilipedias on 13-12-2015.
  *
@@ -10,26 +8,71 @@ import android.util.Log;
  */
 public class Calculator {
 
-    int last_key, current_key;
-    char op;
+    double value, last_value, result;
+    String display;
+    char last_op;
+    int base;
     final static String TAG = "Calculator";
 
-    public Calculator() {
-
+    public Calculator() {   
+        /* init with base 10 */
+        this.base = 10;
     }
 
-    public void setCurrentKey(int key){
-        this.current_key = key;
-        this.last_key = this.current_key;
+    public void addKey(int key){
+        // must multiplicate for the base
+        this.value = this.value * this.base + key;
+        this.setDisplay(Double.toString(this.last_value) + this.last_op, Double.toString(this.value));
     }
 
     public void setOperation(char op){
-        this.op = op;
+        switch(op) {
+            case '+':
+            case '-':
+            case '*':
+            case '&':
+                this.last_op = op;
+                this.last_value = this.value;
+                this.value = 0;
+                this.setDisplay(Double.toString(this.last_value) + this.last_op,"");
+                break;
+            case '=':
+                switch(this.last_op){
+                    case '+':
+                        this.result = this.last_value + this.value;
+                        break;
+                    case '-':
+                        this.result = this.last_value - this.value;
+                        break;
+                    case '*':
+                        this.result = this.last_value * this.value;
+                        break;
+                    case '&':
+                        this.result = this.last_value / this.value;
+                        break;
+                }
+                this.setDisplay(Double.toString(this.last_value) + this.last_op + Double.toString(this.value) + op, Double.toString(this.result));
+                this.value = this.result;
+                this.last_op = op;
+                break;
+        }
     }
 
-    public void printInfo(){
-        Log.d(TAG, "Current Key: " + this.current_key);
-        Log.d(TAG, "Last Key: " + this.last_key);
-        Log.d(TAG, "Operation: " + this.op);
+    private void setDisplay(String line1, String line2){
+        this.display = line1 + "\n" + line2;
     }
+
+    public String getDisplay() {
+        return this.display;
+    }
+
+    private void setBase(int base){
+        this.base = base;
+    }
+
+    public int getBase() {
+        return this.base;
+    }
+
 }
+
