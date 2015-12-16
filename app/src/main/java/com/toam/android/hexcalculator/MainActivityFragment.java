@@ -17,7 +17,7 @@ public class MainActivityFragment extends Fragment {
 
     /* separating between hex and operation buttons for ease of handle */
     Button btn_calc_hex[], btn_calc_op[];
-    TextView tv_display;
+    TextView tv_display, tv_sub_display;
 
     /* ids of the buttons */
     int btn_calc_hex_i[] = {R.id.calc_0, R.id.calc_1, R.id.calc_2, R.id.calc_3, R.id.calc_4, R.id.calc_5,
@@ -49,7 +49,9 @@ public class MainActivityFragment extends Fragment {
 
         btn_calc_hex = new Button[Utils.HEX_COUNT];
         btn_calc_op  = new Button[Utils.OP_COUNT];
-        tv_display = (TextView) frag_view.findViewById(R.id.main_display);
+
+        tv_display     = (TextView) frag_view.findViewById(R.id.main_display);
+        tv_sub_display = (TextView) frag_view.findViewById(R.id.sub_display);
 
         /* set listener for hex's */
         for (int i = 0; i < Utils.HEX_COUNT; i++) {
@@ -58,7 +60,7 @@ public class MainActivityFragment extends Fragment {
             btn_calc_hex[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     calc.addKey(key);
-                    updateDisplay(calc.getDisplay());
+                    updateDisplay(calc.getDisplay(), calc.getSubDisplay());
                 }
             });
         }
@@ -70,14 +72,15 @@ public class MainActivityFragment extends Fragment {
             btn_calc_op[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     calc.setOperation(Utils.OP_CHAR[key]);
-                    updateDisplay(calc.getDisplay());
+                    updateDisplay(calc.getDisplay(), calc.getSubDisplay());
                 }
             });
         }
     }
 
-    private void updateDisplay(String display) {
+    private void updateDisplay(String display, String sub_display) {
         tv_display.setText(display);
+        tv_sub_display.setText(sub_display);
     }
 
 
