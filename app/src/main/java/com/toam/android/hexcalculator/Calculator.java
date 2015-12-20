@@ -12,12 +12,8 @@ public class Calculator {
 
     double value[], result, curr_val;
     private String display, sub_display;
-    private char op;
-    private int base, position;
-    private boolean update_values;
+    private int base;
     private final static String TAG = "Calculator";
-    private String display_copy;
-    private char old_op;
 
     class Parcel {
         /* op = 'v' stands for value, otherwise they are actual operations */
@@ -27,8 +23,6 @@ public class Calculator {
     }
 
     private LinkedList <Parcel> q;
-    /* auxiliar linked list for calculation */
-    private LinkedList <Parcel> calc_q;
 
     /*
     these values are used to compute the result, when a * or / operation appears
@@ -46,7 +40,6 @@ public class Calculator {
         /* show result only after first operation */
         this.showResult = false;
         this.q = new LinkedList<Parcel>();
-        this.calc_q = new LinkedList<Parcel>();
     }
 
     public void addKey(int key){
@@ -75,6 +68,13 @@ public class Calculator {
         /* e as in empty */
         char prev_op = 'e';
 
+        /* values below are used for multiplication or division operations */
+        boolean precedence = false;
+        char pre_precedence_op = 's';
+        double old_value = 0;
+        double precedence_result = 0;
+        double pre_precedence_result = 0;
+
         for(int i = 0; i < this.q.size(); i++){
 
             /* take values in the contrary order */
@@ -97,12 +97,34 @@ public class Calculator {
             switch(prev_op){
                 case '+':
                     this.result = this.result + l_val;
-                    this.mlt_result = 1;
+                    pre_precedence_op = '+';
+                    pre_precedence_result = this.result;
                     break;
                 case '-':
                     this.result = this.result - l_val;
+                    pre_precedence_op = '-';
+                    pre_precedence_result = this.result;
+                    break;
+                case '*':
+                    if(precedence == false){
+                        precedence_result = old_value;
+                        precedence = true;
+                    } else {
+                        precedence_result *= precedence_result;
+                    }
+
+                    switch (pre_precedence_op){
+                        case '+':
+                            this.result = pre_precedence_result + precedence_result;
+                            break;
+                        case '-':
+                            this.result = pre_precedence_result - precedence_result;
+                            break;
+                    }
+
                     break;
             }
+            old_value = l_val;
 
         }
         this.sub_display = Double.toString(this.result);
@@ -179,28 +201,6 @@ public class Calculator {
         /* value has been pushed, reset it */
         this.curr_val = 0;
 
-        /* create a copy of op, to use when a * or / is called */
-/*        if(this.op == '+' || this.op == '=')
-            this.old_op = this.op;
-
-        switch(op) {
-            case '+':
-            case '-':
-            case '*':
-            case '/':
-                this.display = this.display_copy + op;
-                this.op = op;
-                this.update_values = true;
-          //      this.setDisplay(Double.toString(this.value) + this.op,Double.toString(this.result));
-                break;
-            case '=':
-     //           computeResult();
-       //         this.setDisplay(Double.toString(this.result), "");
-            //    this.value = this.result;
-                this.op = op;
-                break;
-        }
-*/
         refreshDisplay();
     }
 
