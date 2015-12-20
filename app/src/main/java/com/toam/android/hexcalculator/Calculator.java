@@ -24,14 +24,6 @@ public class Calculator {
 
     private LinkedList <Parcel> q;
 
-    /*
-    these values are used to compute the result, when a * or / operation appears
-        this is necessary because of precedence
-        we must save the last result before the operation, and then sum everything after
-     */
-    private double old_result;
-    private double mlt_result;
-    private double old_val;
     private boolean showResult;
 
     public Calculator() {   
@@ -82,7 +74,6 @@ public class Calculator {
 
             char   l_op  = this.q.get(idx).op;
             double l_val = this.q.get(idx).value;
-
 
             if(l_op != 'v') {
                 prev_op = l_op;
@@ -151,82 +142,36 @@ public class Calculator {
 
         }
         this.sub_display = Double.toString(this.result);
-
-        /*
-        switch(this.op){
-             case s we don't want to print the result, go back
-            case 's':
-                this.result = this.curr_val;
-                this.mlt_result = 1;
-                return;
-            case '+':
-                this.multy = false;
-                this.old_result = this.result;
-                this.result = this.result + this.curr_val;
-                this.mlt_result = 1;
-                break;
-            case '-':
-                this.multy = false;
-                this.old_result = this.result;
-                this.result = this.result - this.curr_val;
-                this.mlt_result = 1;
-                break;
-            case '*':
-                 save last operator
-                 save last value
-                if( (this.old_op == '+' || this.old_op == '-' || this.old_op == 's') && !this.multy) {
-                    this.mlt_result = this.old_val;
-                    this.multy = true;
-                }
-
-                this.mlt_result = this.mlt_result * this.curr_val;
-                this.result = this.mlt_result;
-
-                switch (this.old_op){
-                    case '+':
-                        this.result = this.old_result + this.mlt_result;
-                        break;
-                    case '-':
-                        this.result = this.old_result - this.mlt_result;
-                        break;
-                }
-                break;
-            case '/':
-                if( (this.old_op == '+' || this.old_op == '-' || this.old_op == 's') && !this.multy) {
-                    this.mlt_result = this.old_val;
-                    this.multy = true;
-                }
-
-                this.mlt_result = this.mlt_result / this.curr_val;
-                this.result = this.mlt_result;
-
-                switch (this.old_op){
-                    case '+':
-                        this.result = this.old_result + this.mlt_result;
-                        break;
-                    case '-':
-                        this.result = this.old_result - this.mlt_result;
-                        break;
-                }
-                break;
-        }
-        this.sub_display = Double.toString(this.result);*/
     }
 
     public void setOperation(char op){
         Parcel prc = new Parcel();
+
+        /* if queue isn't empty */
+        if(!this.q.isEmpty())
+        /* pop older, not updated value, then push new value */
+            if(this.q.peek().op != 'v')
+                this.q.pop();
 
         /* insert operation to queue */
         prc.op = op;
         prc.value = 0;
         this.q.push(prc);
 
+        /* case = reset everything */
+        if(op == '='){
+            this.q.clear();
+            prc.op = 'v';
+            prc.value = this.result;
+            this.q.push(prc);
+            this.sub_display = "";
+        }
+
         /* value has been pushed, reset it */
         this.curr_val = 0;
 
         refreshDisplay();
     }
-
 
     public void refreshDisplay() {
         this.display = "";
