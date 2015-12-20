@@ -65,8 +65,8 @@ public class Calculator {
 
     private void computeResult(){
 
-        /* e as in empty */
-        char prev_op = 'e';
+        /* s as in start */
+        char prev_op = 's';
 
         /* values below are used for multiplication or division operations */
         boolean precedence = false;
@@ -88,32 +88,36 @@ public class Calculator {
                 prev_op = l_op;
                 this.showResult = true;
                 continue;
-            } else if(prev_op == 'e') {
+            } else if(prev_op == 's') {
                 /* in this case it's easy, no history, result is the value */
                 this.result = l_val;
-                continue;
             }
 
             switch(prev_op){
                 case '+':
-                    this.result = this.result + l_val;
+                    precedence = false;
+                    precedence_result = 0;
                     pre_precedence_op = '+';
                     pre_precedence_result = this.result;
+                    this.result = this.result + l_val;
                     break;
                 case '-':
-                    this.result = this.result - l_val;
+                    precedence = false;
+                    precedence_result = 0;
                     pre_precedence_op = '-';
                     pre_precedence_result = this.result;
+                    this.result = this.result - l_val;
                     break;
                 case '*':
                     if(precedence == false){
                         precedence_result = old_value;
                         precedence = true;
-                    } else {
-                        precedence_result *= precedence_result;
                     }
-
+                    precedence_result *= l_val;
                     switch (pre_precedence_op){
+                        case 's':
+                            this.result = precedence_result;
+                            break;
                         case '+':
                             this.result = pre_precedence_result + precedence_result;
                             break;
@@ -121,7 +125,26 @@ public class Calculator {
                             this.result = pre_precedence_result - precedence_result;
                             break;
                     }
-
+                    break;
+                case '/':
+                    if(precedence == false){
+                        precedence_result = old_value;
+                        precedence = true;
+                    }
+                    precedence_result /= l_val;
+                    switch (pre_precedence_op){
+                        case 's':
+                            this.result = precedence_result;
+                            break;
+                        case '+':
+                            this.result = pre_precedence_result + precedence_result;
+                            break;
+                        case '-':
+                            this.result = pre_precedence_result - precedence_result;
+                            break;
+                    }
+                    break;
+                default:
                     break;
             }
             old_value = l_val;
