@@ -238,13 +238,13 @@ public class Calculator {
         }
         switch(mode){
             case 0:
-                //this.display += Double.toString(l_val);
+                this.sub_display = Integer.toString((int)this.result,2);
                 break;
             case 1:
                 this.sub_display = Double.toString(this.result);
                 break;
             case 2:
-                this.sub_display = String.format("0x%x", (int) this.result);
+                this.sub_display = "0x" + Integer.toString((int)this.result,16);
                 break;
         }
     }
@@ -266,13 +266,13 @@ public class Calculator {
             if (l_op == 'v')
                 switch(mode){
                     case 0:
-                        //this.display += Double.toString(l_val);
+                        this.display += Integer.toString((int)l_val,2);
                         break;
                     case 1:
                         this.display += Double.toString(l_val);
                         break;
                     case 2:
-                        this.display += String.format("0x%x", (int) l_val);
+                        this.display += "0x" + Integer.toString((int)l_val,16);
                         break;
                 }
             else

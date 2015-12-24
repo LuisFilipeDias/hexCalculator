@@ -27,6 +27,4 @@ public class Utils {
     /* ids of the mode radios */
     final static int btn_calc_mode_i[] = {R.id.radBin, R.id.radDec, R.id.radHex};
 
-
-
 }
