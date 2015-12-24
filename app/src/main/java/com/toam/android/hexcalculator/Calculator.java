@@ -21,23 +21,18 @@ public class Calculator {
         double value;
     }
 
+    /* the view */
+    private View v;
+
     /* xml related variables */
     private TextView tv_display, tv_sub_display;
-    /* ids of the number buttons */
-    int btn_calc_hex_i[] = {R.id.calc_0, R.id.calc_1, R.id.calc_2, R.id.calc_3, R.id.calc_4, R.id.calc_5,
-            R.id.calc_6, R.id.calc_7, R.id.calc_8, R.id.calc_9, R.id.calc_A, R.id.calc_B,
-            R.id.calc_C, R.id.calc_D, R.id.calc_E, R.id.calc_F};
-    /* ids of the operation buttons */
-    int btn_calc_op_i[] = {R.id.calc_plus, R.id.calc_minus, R.id.calc_times, R.id.calc_div,
-            R.id.calc_and, R.id.calc_or, R.id.calc_equal};
-    /* ids of the mode radios */
-    int btn_calc_mode_i[] = {R.id.radBin, R.id.radDec, R.id.radHex};
+    private Button[] btn_calc_hex;
 
     /* calculation and display variables */
     private boolean showResult;
+    private int base, mode;
     private double result, curr_val;
     private String display, sub_display;
-    private int base, mode;
 
     /* value/operands queue */
     private LinkedList<Parcel> q;
@@ -45,15 +40,17 @@ public class Calculator {
     //private final static String TAG = "Calculator";
 
     public Calculator(View v) {
+        this.v = v;
+
         /* start with mode 0 (bin) */
-        this.mode = 0;
+        this.mode = 1;
         /* init with base 10 */
         this.base = 10;
         /* show result only after first operation */
         this.showResult = false;
         this.q = new LinkedList<>();
 
-        Button[] btn_calc_hex = new Button[Utils.HEX_COUNT];
+        btn_calc_hex = new Button[Utils.HEX_COUNT];
         Button[] btn_calc_op = new Button[Utils.OP_COUNT];
         Button[] btn_calc_mode = new Button[Utils.MODE_COUNT];
 
@@ -63,11 +60,10 @@ public class Calculator {
         /* set listener for hex's */
         for (int i = 0; i < Utils.HEX_COUNT; i++) {
             final int key = i;
-            btn_calc_hex[i] = (Button) v.findViewById(btn_calc_hex_i[i]);
+            btn_calc_hex[i] = (Button) v.findViewById(Utils.btn_calc_hex_i[i]);
             btn_calc_hex[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     addKey(key);
-                    updateDisplay(getDisplay(), getSubDisplay());
                 }
             });
         }
@@ -75,11 +71,10 @@ public class Calculator {
         /* set listener for ops */
         for (int i = 0; i < Utils.OP_COUNT; i++) {
             final int key = i;
-            btn_calc_op[i] = (Button) v.findViewById(btn_calc_op_i[i]);
+            btn_calc_op[i] = (Button) v.findViewById(Utils.btn_calc_op_i[i]);
             btn_calc_op[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     setOperation(Utils.OP_CHAR[key]);
-                    updateDisplay(getDisplay(), getSubDisplay());
                 }
             });
         }
@@ -87,15 +82,20 @@ public class Calculator {
         /* set listener for calc modes */
         for (int i = 0; i < Utils.MODE_COUNT; i++) {
             final int mode = i;
-            btn_calc_mode[i] = (Button) v.findViewById(btn_calc_mode_i[i]);
+            final int old_mode = this.mode;
+            btn_calc_mode[i] = (Button) v.findViewById(Utils.btn_calc_mode_i[i]);
             btn_calc_mode[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    setMode(mode);
+                    if(mode != old_mode)
+                        setMode(mode);
                 }
             });
         }
+
+        enableHexButtons();
     }
 
+    /* set the latest operation */
     private void setOperation(char op) {
         Parcel prc = new Parcel();
 
@@ -112,11 +112,7 @@ public class Calculator {
 
         /* case = reset everything */
         if (op == '=') {
-            this.q.clear();
-            prc.op = 'v';
-            prc.value = this.result;
-            this.q.push(prc);
-            this.sub_display = "";
+            flush();
         }
 
         /* value has been pushed, reset it */
@@ -125,6 +121,18 @@ public class Calculator {
         refreshDisplay();
     }
 
+    /* flush the value into the result string */
+    private void flush(){
+        Parcel prc = new Parcel();
+
+        this.q.clear();
+        prc.op = 'v';
+        prc.value = this.result;
+        this.q.push(prc);
+        this.sub_display = "";
+    }
+
+    /* add pressed key into the current value */
     private void addKey(int key) {
         Parcel prc = new Parcel();
 
@@ -146,8 +154,8 @@ public class Calculator {
         refreshDisplay();
     }
 
+    /* compute the result by parsing the queue values */
     private void computeResult() {
-
         /* s as in start */
         char prev_op = 's';
 
@@ -251,17 +259,21 @@ public class Calculator {
 
             if (l_op == 'v')
                 this.display += Double.toString(l_val);
+                //this.display += String.format("%d", l_val);
             else
                 this.display += l_op;
         }
-    }
 
-    private void updateDisplay(String display, String sub_display) {
         tv_display.setText(display);
         tv_sub_display.setText(sub_display);
     }
 
-    private String getDisplay() {
+    /*private void updateDisplay(String display, String sub_display) {
+        tv_display.setText(display);
+        tv_sub_display.setText(sub_display);
+    }*/
+
+    /*private String getDisplay() {
         return this.display;
     }
 
@@ -270,7 +282,7 @@ public class Calculator {
             return this.sub_display;
         else
             return "";
-    }
+    }*/
 
     private void setMode(int mode) {
         this.mode = mode;
@@ -285,11 +297,22 @@ public class Calculator {
                 this.base = 16;
                 break;
         }
-        refreshButtons();
+        flush();
+        refreshDisplay();
+        enableHexButtons();
     }
 
-    private void refreshButtons() {
-
+    /* enable the calculator buttons according to current mode/base */
+    private void enableHexButtons() {
+        for (int i = 0; i < Utils.HEX_COUNT; i++) {
+            if( i < this.base) {
+                btn_calc_hex[i].setClickable(true);
+                btn_calc_hex[i].setTextColor(v.getResources().getColor(R.color.white));
+            } else {
+                btn_calc_hex[i].setClickable(false);
+                btn_calc_hex[i].setTextColor(v.getResources().getColor(R.color.gray));
+            }
+        }
     }
 
 }

@@ -32,14 +32,14 @@
                 android:id="@+id/radBin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:text="bin" />
 
             <RadioButton
                 android:id="@+id/radDec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
+                android:checked="true"
                 android:text="dec" />
 
             <RadioButton
