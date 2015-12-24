@@ -8,8 +8,14 @@ public class Utils {
     /* number of calculator digits */
     final static int MAX_DIGITS = 100;
 
-    final static int  HEX_COUNT = 16; // 0x0F
-    final static int  OP_COUNT = 7;   // +, -, *, /, &, |, =
+    /* bin, dec, hex */
+    final static int  MODE_COUNT = 3;
+
+    /* 0 to 0xF */
+    final static int  HEX_COUNT = 16;
+
+    /* +, -, *, /, &, |, = */
+    final static int  OP_COUNT = 7;
     final static char OP_CHAR[] = {'+', '-', '*', '/', '&', '|', '='};
 
 }
