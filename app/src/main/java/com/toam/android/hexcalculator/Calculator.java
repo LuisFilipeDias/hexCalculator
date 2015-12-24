@@ -283,6 +283,16 @@ public class Calculator {
                 this.display += l_op;
         }
 
+        int len = display.length();
+        if(len < 20)
+            tv_display.setTextSize(40);
+        else if(len >= 20 && len < 25)
+            tv_display.setTextSize(35);
+        else if(len >= 25 && len < 30)
+            tv_display.setTextSize(30);
+        else if(len >= 30)
+            tv_display.setTextSize(25);
+
         tv_display.setText(display);
         tv_sub_display.setText(sub_display);
     }

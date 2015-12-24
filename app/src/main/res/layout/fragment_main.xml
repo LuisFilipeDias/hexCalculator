@@ -1,102 +1,116 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
+    android:orientation="vertical"
+    android:weightSum="100"
     tools:context=".MainActivityFragment">
 
     <LinearLayout
         android:id="@+id/main_display_mode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="25"
+        android:orientation="vertical"
+        android:weightSum="100">
 
-        <TextView
-            android:id="@+id/tv_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Mode" />
-
-        <RadioGroup
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="left"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:background="@color/white"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radBin"
+            <TextView
+                android:id="@+id/tv_mode"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="bin" />
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/calc_mode" />
 
-            <RadioButton
-                android:id="@+id/radDec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="dec" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radHex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="hex" />
+                <RadioButton
+                    android:id="@+id/radBin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/calc_bin" />
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radDec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/calc_dec" />
+
+                <RadioButton
+                    android:id="@+id/radHex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="@string/calc_hex" />
+
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/main_display_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:weightSum="100">
+
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="60"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/main_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="@string/calc_display"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="35sp" />
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="40"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/sub_display"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="25sp" />
+            </HorizontalScrollView>
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/main_display_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/main_display_mode"
-        android:background="@color/white"
-        android:orientation="vertical">
-        a
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/main_display"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"
-                android:text="0"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="35dp" />
-        </HorizontalScrollView>
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/sub_display"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="25dp" />
-        </HorizontalScrollView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/main_display_layout"
+        android:layout_height="0dp"
+        android:layout_weight="75"
         android:orientation="vertical">
 
         <LinearLayout
@@ -111,9 +125,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="D"
+                android:text="@string/calc_D"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_E"
@@ -121,9 +135,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="E"
+                android:text="@string/calc_E"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_F"
@@ -133,7 +147,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="F"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_and"
@@ -143,7 +157,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="&amp;"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -160,7 +174,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="A"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_B"
@@ -170,7 +184,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="B"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_C"
@@ -180,7 +194,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="C"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_or"
@@ -190,7 +204,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="|"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -207,7 +221,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="7"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_8"
@@ -217,7 +231,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="8"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_9"
@@ -227,7 +241,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="9"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_div"
@@ -237,7 +251,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="/"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -254,7 +268,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="4"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_5"
@@ -264,7 +278,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="5"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_6"
@@ -274,7 +288,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="6"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_times"
@@ -284,7 +298,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="*"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -301,7 +315,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="1"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_2"
@@ -311,7 +325,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="2"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_3"
@@ -319,9 +333,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="3"
+                android:text="@string/calc_3"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_minus"
@@ -331,7 +345,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="-"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -348,7 +362,7 @@
                 android:background="@drawable/calc_btn"
                 android:text="0"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_dot"
@@ -356,9 +370,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="."
+                android:text="@string/calc_dot"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_equal"
@@ -366,9 +380,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="="
+                android:text="@string/calc_equal"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
 
             <Button
                 android:id="@+id/calc_plus"
@@ -376,11 +390,11 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="+"
+                android:text="@string/calc_plus"
                 android:textColor="@color/white"
-                android:textSize="23dp" />
+                android:textSize="23sp" />
         </LinearLayout>
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
