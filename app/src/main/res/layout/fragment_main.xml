@@ -145,7 +145,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="F"
+                android:text="@string/calc_F"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -155,7 +155,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="&amp;"
+                android:text="@string/calc_and"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
         </LinearLayout>
@@ -172,7 +172,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="A"
+                android:text="@string/calc_A"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -182,7 +182,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="B"
+                android:text="@string/calc_B"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -192,7 +192,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="C"
+                android:text="@string/calc_C"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -202,7 +202,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="|"
+                android:text="@string/calc_or"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
         </LinearLayout>
@@ -219,7 +219,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="7"
+                android:text="@string/calc_7"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -229,7 +229,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="8"
+                android:text="@string/calc_8"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -239,7 +239,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="9"
+                android:text="@string/calc_9"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -249,7 +249,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="/"
+                android:text="@string/calc_div"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
         </LinearLayout>
@@ -266,7 +266,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="4"
+                android:text="@string/calc_4"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -276,7 +276,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="5"
+                android:text="@string/calc_5"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -286,7 +286,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="6"
+                android:text="@string/calc_6"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -296,7 +296,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="*"
+                android:text="@string/calc_mult"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
         </LinearLayout>
@@ -313,7 +313,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="1"
+                android:text="@string/calc_1"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -323,7 +323,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="2"
+                android:text="@string/calc_2"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 
@@ -343,7 +343,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="-"
+                android:text="@string/calc_minus"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
         </LinearLayout>
@@ -360,7 +360,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="25"
                 android:background="@drawable/calc_btn"
-                android:text="0"
+                android:text="@string/calc_0"
                 android:textColor="@color/white"
                 android:textSize="23sp" />
 

@@ -13,4 +13,22 @@
     <string name="calc_equal">=</string>
     <string name="calc_dot">.</string>
     <string name="calc_3">3</string>
+    <string name="calc_F">F</string>
+    <string name="calc_and"><![CDATA[&]]></string>
+    <string name="calc_A">A</string>
+    <string name="calc_B">B</string>
+    <string name="calc_C">C</string>
+    <string name="calc_or">|</string>
+    <string name="calc_8">8</string>
+    <string name="calc_div">/</string>
+    <string name="calc_7">7</string>
+    <string name="calc_4">4</string>
+    <string name="calc_5">5</string>
+    <string name="calc_2">2</string>
+    <string name="calc_1">1</string>
+    <string name="calc_9">9</string>
+    <string name="calc_6">6</string>
+    <string name="calc_mult">*</string>
+    <string name="calc_0">0</string>
+    <string name="calc_minus">-</string>
 </resources>

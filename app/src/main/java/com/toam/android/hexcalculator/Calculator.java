@@ -29,7 +29,6 @@ public class Calculator {
     private Button[] btn_calc_hex;
 
     /* calculation and display variables */
-    private boolean showResult;
     private int base, mode;
     private double result, curr_val;
     private String display, sub_display;
@@ -46,8 +45,6 @@ public class Calculator {
         this.mode = 1;
         /* init with base 10 */
         this.base = 10;
-        /* show result only after first operation */
-        this.showResult = false;
         this.q = new LinkedList<>();
 
         btn_calc_hex = new Button[Utils.HEX_COUNT];
@@ -176,7 +173,6 @@ public class Calculator {
 
             if (l_op != 'v') {
                 prev_op = l_op;
-                this.showResult = true;
                 continue;
             } else if (prev_op == 's') {
                 /* in this case it's easy, no history, result is the value */
