@@ -82,12 +82,10 @@ public class Calculator {
         /* set listener for calc modes */
         for (int i = 0; i < Utils.MODE_COUNT; i++) {
             final int mode = i;
-            final int old_mode = this.mode;
             btn_calc_mode[i] = (Button) v.findViewById(Utils.btn_calc_mode_i[i]);
             btn_calc_mode[i].setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if(mode != old_mode)
-                        setMode(mode);
+                    setMode(mode);
                 }
             });
         }
@@ -129,6 +127,8 @@ public class Calculator {
         prc.op = 'v';
         prc.value = this.result;
         this.q.push(prc);
+
+        this.curr_val = 0;
         this.sub_display = "";
     }
 
@@ -240,7 +240,17 @@ public class Calculator {
             old_value = l_val;
 
         }
-        this.sub_display = Double.toString(this.result);
+        switch(mode){
+            case 0:
+                //this.display += Double.toString(l_val);
+                break;
+            case 1:
+                this.sub_display = Double.toString(this.result);
+                break;
+            case 2:
+                this.sub_display = String.format("0x%x", (int) this.result);
+                break;
+        }
     }
 
     private void refreshDisplay() {
@@ -258,8 +268,17 @@ public class Calculator {
             double l_val = this.q.get(idx).value;
 
             if (l_op == 'v')
-                this.display += Double.toString(l_val);
-                //this.display += String.format("%d", l_val);
+                switch(mode){
+                    case 0:
+                        //this.display += Double.toString(l_val);
+                        break;
+                    case 1:
+                        this.display += Double.toString(l_val);
+                        break;
+                    case 2:
+                        this.display += String.format("0x%x", (int) l_val);
+                        break;
+                }
             else
                 this.display += l_op;
         }
@@ -285,21 +304,26 @@ public class Calculator {
     }*/
 
     private void setMode(int mode) {
-        this.mode = mode;
-        switch (this.mode) {
-            case 0:
-                this.base = 2;
-                break;
-            case 1:
-                this.base = 10;
-                break;
-            case 2:
-                this.base = 16;
-                break;
+        if(mode != this.mode){
+            /* changing mode, must reset value */
+            this.curr_val = 0;
+
+            this.mode = mode;
+            switch (this.mode) {
+                case 0:
+                    this.base = 2;
+                    break;
+                case 1:
+                    this.base = 10;
+                    break;
+                case 2:
+                    this.base = 16;
+                    break;
+            }
+            flush();
+            refreshDisplay();
+            enableHexButtons();
         }
-        flush();
-        refreshDisplay();
-        enableHexButtons();
     }
 
     /* enable the calculator buttons according to current mode/base */
@@ -310,7 +334,7 @@ public class Calculator {
                 btn_calc_hex[i].setTextColor(v.getResources().getColor(R.color.white));
             } else {
                 btn_calc_hex[i].setClickable(false);
-                btn_calc_hex[i].setTextColor(v.getResources().getColor(R.color.gray));
+                btn_calc_hex[i].setTextColor(v.getResources().getColor(R.color.grey));
             }
         }
     }
