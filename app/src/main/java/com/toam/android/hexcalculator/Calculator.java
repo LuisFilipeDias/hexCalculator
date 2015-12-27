@@ -27,6 +27,7 @@ public class Calculator {
     /* xml related variables */
     private TextView tv_display, tv_sub_display;
     private Button[] btn_calc_hex;
+    private Button[] btn_calc_op;
 
     /* calculation and display variables */
     private int base, mode;
@@ -48,7 +49,7 @@ public class Calculator {
         this.q = new LinkedList<>();
 
         btn_calc_hex = new Button[Utils.HEX_COUNT];
-        Button[] btn_calc_op = new Button[Utils.OP_COUNT];
+        btn_calc_op = new Button[Utils.OP_COUNT];
         Button[] btn_calc_mode = new Button[Utils.MODE_COUNT];
 
         tv_display = (TextView) v.findViewById(R.id.main_display);
@@ -87,18 +88,27 @@ public class Calculator {
             });
         }
 
-        enableHexButtons();
+        enableButtons();
     }
 
     /* set the latest operation */
     private void setOperation(char op) {
         Parcel prc = new Parcel();
 
+        // if list has 3 positions and mode 0 or 2 -> must flush and use new value
+        /* do just for hex or binary calculation */
+        if( this.mode == 0 || this.mode == 2){
+            if(this.q.size() == 3) {
+                flush();
+            }
+        }
+
         /* if queue isn't empty */
-        if (!this.q.isEmpty())
+        if (!this.q.isEmpty()) {
         /* pop older, not updated value, then push new value */
             if (this.q.peek().op != 'v')
                 this.q.pop();
+        }
 
         /* insert operation to queue */
         prc.op = op;
@@ -117,7 +127,7 @@ public class Calculator {
     }
 
     /* flush the value into the result string */
-    private void flush(){
+    private void flush() {
         Parcel prc = new Parcel();
 
         this.q.clear();
@@ -194,6 +204,12 @@ public class Calculator {
                     pre_precedence_result = this.result;
                     this.result = this.result - l_val;
                     break;
+                case '&':
+                    this.result = (int)this.result & (int)l_val;
+                    break;
+                case '|':
+                    this.result = (int)this.result | (int)l_val;
+                    break;
                 case '*':
                     if (!precedence) {
                         precedence_result = old_value;
@@ -236,15 +252,15 @@ public class Calculator {
             old_value = l_val;
 
         }
-        switch(mode){
+        switch (mode) {
             case 0:
-                this.sub_display = Integer.toString((int)this.result,2);
+                this.sub_display = Integer.toString((int) this.result, 2);
                 break;
             case 1:
                 this.sub_display = Double.toString(this.result);
                 break;
             case 2:
-                this.sub_display = "0x" + Integer.toString((int)this.result,16);
+                this.sub_display = "0x" + Integer.toString((int) this.result, 16);
                 break;
         }
     }
@@ -264,53 +280,43 @@ public class Calculator {
             double l_val = this.q.get(idx).value;
 
             if (l_op == 'v')
-                switch(mode){
+                switch (mode) {
                     case 0:
-                        this.display += Integer.toString((int)l_val,2);
+                        this.display += Integer.toString((int) l_val, 2);
                         break;
                     case 1:
                         this.display += Double.toString(l_val);
                         break;
                     case 2:
-                        this.display += "0x" + Integer.toString((int)l_val,16);
+                        this.display += "0x" + Integer.toString((int) l_val, 16);
                         break;
                 }
             else
                 this.display += l_op;
+
+            this.display += " ";
         }
 
         int len = display.length();
-        if(len < 20)
+        if (len < 20)
             tv_display.setTextSize(40);
-        else if(len >= 20 && len < 25)
+        else if (len >= 20 && len < 25)
             tv_display.setTextSize(35);
-        else if(len >= 25 && len < 30)
+        else if (len >= 25 && len < 30)
             tv_display.setTextSize(30);
-        else if(len >= 30)
+        else if (len >= 30)
             tv_display.setTextSize(25);
 
         tv_display.setText(display);
-        tv_sub_display.setText(sub_display);
-    }
-
-    /*private void updateDisplay(String display, String sub_display) {
-        tv_display.setText(display);
-        tv_sub_display.setText(sub_display);
-    }*/
-
-    /*private String getDisplay() {
-        return this.display;
-    }
-
-    private String getSubDisplay() {
-        if (showResult)
-            return this.sub_display;
+        /* we should only print the result, if there is a calculation made */
+        if(this.q.size() > 2)
+            tv_sub_display.setText(sub_display);
         else
-            return "";
-    }*/
+            tv_sub_display.setText("");
+    }
 
     private void setMode(int mode) {
-        if(mode != this.mode){
+        if (mode != this.mode) {
             /* changing mode, must reset value */
             this.curr_val = 0;
 
@@ -328,14 +334,19 @@ public class Calculator {
             }
             flush();
             refreshDisplay();
-            enableHexButtons();
+            enableButtons();
         }
+    }
+
+    private void enableButtons(){
+        enableHexButtons();
+        enableOpButtons();
     }
 
     /* enable the calculator buttons according to current mode/base */
     private void enableHexButtons() {
         for (int i = 0; i < Utils.HEX_COUNT; i++) {
-            if( i < this.base) {
+            if (i < this.base) {
                 btn_calc_hex[i].setClickable(true);
                 btn_calc_hex[i].setTextColor(v.getResources().getColor(R.color.white));
             } else {
@@ -345,5 +356,33 @@ public class Calculator {
         }
     }
 
-}
+    /* enable the calculator buttons according to current mode/base */
+    private void enableOpButtons() {
 
+        // final static char OP_CHAR[] = {'+', '-', '*', '/', '&', '|', '='};
+        switch (this.mode) {
+            case 0:
+            case 2:
+                for (int i = 2; i < 4; i++) {
+                    btn_calc_op[i].setClickable(false);
+                    btn_calc_op[i].setTextColor(v.getResources().getColor(R.color.grey));
+                }
+                for (int i = 4; i < 6; i++) {
+                    btn_calc_op[i].setClickable(true);
+                    btn_calc_op[i].setTextColor(v.getResources().getColor(R.color.white));
+                }
+                break;
+            case 1:
+                for (int i = 4; i < 6; i++) {
+                    btn_calc_op[i].setClickable(false);
+                    btn_calc_op[i].setTextColor(v.getResources().getColor(R.color.grey));
+                }
+                for (int i = 2; i < 4; i++) {
+                    btn_calc_op[i].setClickable(true);
+                    btn_calc_op[i].setTextColor(v.getResources().getColor(R.color.white));
+                }
+                break;
+
+        }
+    }
+}
