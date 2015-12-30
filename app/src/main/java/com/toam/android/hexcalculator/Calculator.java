@@ -13,14 +13,6 @@ import java.util.LinkedList;
  */
 public class Calculator {
 
-    /* class used for the values/operands queue */
-    public class Parcel {
-        /* op = 'v' stands for value, otherwise they are actual operations */
-        char op;
-        /* in case op != 'v' value should be null */
-        double value;
-    }
-
     /* the view */
     private View v;
 
@@ -35,7 +27,7 @@ public class Calculator {
     private String display, sub_display;
 
     /* value/operands queue */
-    private LinkedList<Parcel> q;
+    private LinkedList<Utils.Parcel> q;
 
     //private final static String TAG = "Calculator";
 
@@ -93,7 +85,7 @@ public class Calculator {
 
     /* set the latest operation */
     private void setOperation(char op) {
-        Parcel prc = new Parcel();
+        Utils.Parcel prc = new Utils.Parcel();
 
         // if list has 3 positions and mode 0 or 2 -> must flush and use new value
         /* do just for hex or binary calculation */
@@ -128,7 +120,7 @@ public class Calculator {
 
     /* flush the value into the result string */
     private void flush() {
-        Parcel prc = new Parcel();
+        Utils.Parcel prc = new Utils.Parcel();
 
         this.q.clear();
         prc.op = 'v';
@@ -141,7 +133,7 @@ public class Calculator {
 
     /* add pressed key into the current value */
     private void addKey(int key) {
-        Parcel prc = new Parcel();
+        Utils.Parcel prc = new Utils.Parcel();
 
         this.curr_val = this.curr_val * this.base + key;
 
@@ -157,12 +149,12 @@ public class Calculator {
 
         this.q.push(prc);
 
-        computeResult();
+        this.result = computeResult(this.q);
         refreshDisplay();
     }
 
     /* compute the result by parsing the queue values */
-    private void computeResult() {
+    public double computeResult(LinkedList<Utils.Parcel> t_q) {
         /* s as in start */
         char prev_op = 's';
 
@@ -173,20 +165,20 @@ public class Calculator {
         double precedence_result = 0;
         double pre_precedence_result = 0;
 
-        for (int i = 0; i < this.q.size(); i++) {
+        for (int i = 0; i < t_q.size(); i++) {
 
             /* take values in the contrary order */
-            int idx = this.q.size() - i - 1;
+            int idx = t_q.size() - i - 1;
 
-            char l_op = this.q.get(idx).op;
-            double l_val = this.q.get(idx).value;
+            char l_op = t_q.get(idx).op;
+            double l_val = t_q.get(idx).value;
 
             if (l_op != 'v') {
                 prev_op = l_op;
                 continue;
             } else if (prev_op == 's') {
                 /* in this case it's easy, no history, result is the value */
-                this.result = l_val;
+                result = l_val;
             }
 
             switch (prev_op) {
@@ -194,21 +186,21 @@ public class Calculator {
                     precedence = false;
                     precedence_result = 0;
                     pre_precedence_op = '+';
-                    pre_precedence_result = this.result;
-                    this.result = this.result + l_val;
+                    pre_precedence_result = result;
+                    result = result + l_val;
                     break;
                 case '-':
                     precedence = false;
                     precedence_result = 0;
                     pre_precedence_op = '-';
-                    pre_precedence_result = this.result;
-                    this.result = this.result - l_val;
+                    pre_precedence_result = result;
+                    result = result - l_val;
                     break;
                 case '&':
-                    this.result = (int)this.result & (int)l_val;
+                    result = (int)result & (int)l_val;
                     break;
                 case '|':
-                    this.result = (int)this.result | (int)l_val;
+                    result = (int)result | (int)l_val;
                     break;
                 case '*':
                     if (!precedence) {
@@ -218,13 +210,13 @@ public class Calculator {
                     precedence_result *= l_val;
                     switch (pre_precedence_op) {
                         case 's':
-                            this.result = precedence_result;
+                            result = precedence_result;
                             break;
                         case '+':
-                            this.result = pre_precedence_result + precedence_result;
+                            result = pre_precedence_result + precedence_result;
                             break;
                         case '-':
-                            this.result = pre_precedence_result - precedence_result;
+                            result = pre_precedence_result - precedence_result;
                             break;
                     }
                     break;
@@ -236,13 +228,13 @@ public class Calculator {
                     precedence_result /= l_val;
                     switch (pre_precedence_op) {
                         case 's':
-                            this.result = precedence_result;
+                            result = precedence_result;
                             break;
                         case '+':
-                            this.result = pre_precedence_result + precedence_result;
+                            result = pre_precedence_result + precedence_result;
                             break;
                         case '-':
-                            this.result = pre_precedence_result - precedence_result;
+                            result = pre_precedence_result - precedence_result;
                             break;
                     }
                     break;
@@ -254,15 +246,16 @@ public class Calculator {
         }
         switch (mode) {
             case 0:
-                this.sub_display = Integer.toString((int) this.result, 2);
+                this.sub_display = Integer.toString((int) result, 2);
                 break;
             case 1:
-                this.sub_display = Double.toString(this.result);
+                this.sub_display = Double.toString(result);
                 break;
             case 2:
-                this.sub_display = "0x" + Integer.toString((int) this.result, 16);
+                this.sub_display = "0x" + Integer.toString((int) result, 16);
                 break;
         }
+        return result;
     }
 
     private void refreshDisplay() {

@@ -5,6 +5,14 @@ package com.toam.android.hexcalculator;
  */
 public class Utils {
 
+    /* class used for the values/operands queue */
+    final static class Parcel {
+        /* op = 'v' stands for value, otherwise they are actual operations */
+        char op;
+        /* in case op != 'v' value should be null */
+        double value;
+    }
+
     /* bin, dec, hex */
     final static int  MODE_COUNT = 3;
 
